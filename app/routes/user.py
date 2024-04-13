@@ -1,4 +1,4 @@
-from fastapi import APIRoutes, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm, OAuth2PasswordBearer
 
 from bson import ObjectId

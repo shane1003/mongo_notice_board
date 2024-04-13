@@ -9,7 +9,13 @@ from app.models.schemas.jwt import JWTMeta, JWTUser
 from fastapi.security import OAuth2PasswordRequestForm, OAuth2PasswordBearer
 from passlib.context import CryptContext
 
-SECRET_KEY = "982319dcf75476d89245903a009166655c538033a5ba5ff0ea1c802ba4cc064e"
+import os
+
+load_dotenv()
+
+SECRET = os.getenv('SECRET')
+
+
 JWT_SUBJECT = "access"
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60
