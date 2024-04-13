@@ -9,6 +9,8 @@ from app.models.schemas.jwt import JWTMeta, JWTUser
 from fastapi.security import OAuth2PasswordRequestForm, OAuth2PasswordBearer
 from passlib.context import CryptContext
 
+from dotenv import load_dotenv
+
 import os
 
 load_dotenv()
