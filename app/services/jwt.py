@@ -1,13 +1,9 @@
-from datetime import datetime, timedelta
-from typing import Dict
-
-from jose import jwt
-from pydantic import ValidationError, BaseModel
-
-from app.models.domain.user import User
-from app.models.schemas.jwt import JWTMeta, JWTUser
-from fastapi.security import OAuth2PasswordRequestForm, OAuth2PasswordBearer
-from passlib.context import CryptContext
+from datetime import datetime, timedelta, timezone
+from models.schemas.jwt import Token, TokenData
+from jose import jwt, JWTError
+from typing import Annotated
+from fastapi import Depends, HTTPException, status
+from fastapi.security import OAuth2PasswordBearer
 
 from dotenv import load_dotenv
 
@@ -15,16 +11,22 @@ import os
 
 load_dotenv()
 
-SECRET = os.getenv('SECRET')
+SECRET_KEY = os.getenv('SECRET')
 
-
-JWT_SUBJECT = "access"
 ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 60
+ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 15
 
-class Token(BaseModel):
-    access_token: str
-    token_type: str
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl='login')
 
-class TokenData(BaseModel):
-    username: str | None = None
+def create_access_token(data = dict, expires_delta: timedelta | None = None) -> str:
+    to_encode = data.copy()
+    if expires_delta:
+        expire = datetime.now(timezone.utc) + expires_delta
+    else:
+        expire = datetime.now(timezone.utc) + timedelta(minutes=15)
+    to_encode.update({"exp": expire})
+    encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+    return encoded_jwt
+    
+
+

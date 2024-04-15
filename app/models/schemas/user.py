@@ -1,21 +1,11 @@
 from bson import ObjectId
-from pydantic import BaseModel, validator
+from pydantic import BaseModel, validator, constr
 from typing import Optional, List
-from models.domain.user import User
-
-def get_one_account(account) -> dict:
-    return{
-        "id" : str(account.get("_id")),
-        "username" : account.get("username"),
-        "password" : account.get("password"),
-        "nickname" : account.get("nickname"),
-        "articles" : account.get("articles")
-    }
-
-#class UserInLogin()
+from models.domain.user import User, UserInDB
+from services.security import get_password_hash
 
 class UserInCreate(BaseModel):
-    user_id : str
+    username : str
     password1 : str
     password2 : str
     nickname : str
@@ -32,9 +22,25 @@ class UserInCreate(BaseModel):
             raise ValueError('Password does not match')
         return v
 
-class UserInUpdate(BaseModel):
-    password : Optional[str] = None
-    nickname : Optional[str] = None
+def get_one_user(account) -> dict:
+    return{
+        "id": str(account.get("_id")),
+        "username": account.get("username"),
+        "nickname": account.get("nickname"),
+        "articles": account.get("articles")
+    }
 
-class UserWithToken(User):
-    token: str
+def get_user_by_username(collection_account, username: str) -> dict:
+    if username in collection_account:
+        user_dict = collection_account['username']
+        return UserInDB(**user_dict)
+    
+def user_input_2_db(input: UserInCreate):
+    return{
+        "username": input["username"],
+        "password": get_password_hash(input["password1"]),
+        "nickname": input["nickname"],
+        "articles": []
+    }
+
+#class UserInLogin()

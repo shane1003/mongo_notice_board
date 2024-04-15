@@ -1,10 +1,11 @@
 from datetime import datetime as dt
+from typing import Optional
 
 from pydantic import BaseModel
 
-class JWTMeta(BaseModel):
-    exp: dt
-    sub: str
+class Token(BaseModel):
+    access_token: str
+    token_type: str
 
-class JWTUser(BaseModel):
-    id : str
+class TokenData(BaseModel):
+    username: Optional[str] = None

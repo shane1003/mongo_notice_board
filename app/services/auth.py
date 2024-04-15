@@ -1,12 +1,12 @@
 from app.config.config import collection_account
 from app.services.security import verify_password
 from fastapi import APIRouter, Depends, status, HTTPException, Response
-
+from models.schemas.user import get_user_by_username
 
 def authenticate_user(username: str, password: str):
-    user = collection_account.find_one({"account_id" : username})
+    user = get_user_by_username(username)
     if not user:
         return False
-    if not verify_password(password, user.model_dump()['password']):
+    if not verify_password(password, user['password']):
         return False
-    return user.model_dump()
+    return user
