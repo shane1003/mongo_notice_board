@@ -5,3 +5,4 @@
 /app/model/domain/__pycache__
 /app/model/schema/__pycache__
 /app/routes/__pycache__
+/app/services/__pycache__

@@ -24,6 +24,6 @@ def login(user_credentials: Annotated[OAuth2PasswordRequestForm, Depends()]) -> 
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     #create token
     access_token = create_access_token(
-        data = {"user_id": user.username}, expires_delta=access_token_expires
+        data = {"user_id": user['username']}, expires_delta=access_token_expires
     )
     return {"access_token" : access_token, "token_type": "bearer"}

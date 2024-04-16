@@ -1,6 +1,7 @@
 from pydantic import BaseModel, validator, constr
 from app.models.domain.user import UserInDB, User
 from app.services.security import get_password_hash
+from app.config.config import collection_account
 
 class UserInCreate(BaseModel):
     username : str
@@ -28,9 +29,9 @@ def get_one_user(account) -> dict:
         "articles": account.get("articles")
     }
 
-def get_user_by_username(collection_account, username: str) -> dict:
-    if username in collection_account:
-        user_dict = collection_account['username']
-        return UserInDB(**user_dict)
+def get_user_by_username(username: str) -> dict:
+    user = collection_account.find_one({"username" : username})
+    if user:
+        return user
 
 #class UserInLogin()
