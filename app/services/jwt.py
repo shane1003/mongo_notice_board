@@ -1,8 +1,5 @@
 from datetime import datetime, timedelta, timezone
-from models.schemas.jwt import Token, TokenData
-from jose import jwt, JWTError
-from typing import Annotated
-from fastapi import Depends, HTTPException, status
+from jose import jwt
 from fastapi.security import OAuth2PasswordBearer
 
 from dotenv import load_dotenv

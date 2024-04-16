@@ -1,8 +1,6 @@
-from bson import ObjectId
 from pydantic import BaseModel, validator, constr
-from typing import Optional, List
-from models.domain.user import User, UserInDB
-from services.security import get_password_hash
+from app.models.domain.user import UserInDB, User
+from app.services.security import get_password_hash
 
 class UserInCreate(BaseModel):
     username : str
@@ -18,7 +16,7 @@ class UserInCreate(BaseModel):
     
     @validator('password2')
     def password_match(cls, v, values):
-        if 'password1' in values and v != values['password2']:
+        if 'password1' in values and v != values['password1']:
             raise ValueError('Password does not match')
         return v
 
@@ -34,13 +32,5 @@ def get_user_by_username(collection_account, username: str) -> dict:
     if username in collection_account:
         user_dict = collection_account['username']
         return UserInDB(**user_dict)
-    
-def user_input_2_db(input: UserInCreate):
-    return{
-        "username": input["username"],
-        "password": get_password_hash(input["password1"]),
-        "nickname": input["nickname"],
-        "articles": []
-    }
 
 #class UserInLogin()

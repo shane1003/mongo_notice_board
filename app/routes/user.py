@@ -1,13 +1,8 @@
-from fastapi import APIRouter, Depends, HTTPException, status
-from fastapi.security import OAuth2PasswordRequestForm, OAuth2PasswordBearer
+from fastapi import APIRouter
 
 from bson import ObjectId
-from typing import Annotated
-
-from app.models.domain.user import User
-from app.services.jwt import Token
 from app.models.schemas.user import get_one_user
-from config.config import collection_account
+from app.config.config import collection_account
 
 router = APIRouter()
 

@@ -2,8 +2,8 @@ from fastapi import APIRouter, Depends, status, HTTPException, Response
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from typing import Annotated
 from datetime import timedelta
-from services.jwt import ACCESS_TOKEN_EXPIRE_MINUTES
-from models.schemas.jwt import Token
+from app.services.jwt import ACCESS_TOKEN_EXPIRE_MINUTES
+from app.models.schemas.jwt import Token
 from app.services.auth import authenticate_user
 from app.services.jwt import create_access_token
 
