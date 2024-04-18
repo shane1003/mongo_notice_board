@@ -1,6 +1,7 @@
 from typing import Annotated
 from fastapi import HTTPException, Depends, status
 from fastapi.security import OAuth2PasswordBearer
+from app.models.domain.user import User
 from jose import JWTError, jwt
 from models.schemas.jwt import TokenData
 from models.schemas.user import get_user_by_username
@@ -31,3 +32,8 @@ async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]):
     if user is None:
         raise credentials_exception
     return user
+
+async def get_current_active_user(current_user : Annotated[User, Depends(get_current_user)]):
+    if current_user.disabled:
+        raise HTTPException(status_code=400, detail="Incative User")
+    return current_user
